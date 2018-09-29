@@ -1,36 +1,53 @@
-// importing components to use in this file
 import React, { Component } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { Navbar, NavItem, Nav } from 'react-bootstrap'
 
-import MyProfileContainer from './containers/MyProfileContainer'
-import AllProfilesContainer from './containers/AllProfilesContainer'
+import MyHome from './containers/MyHome'
+import MyAbout from './containers/MyAbout'
 
 class App extends Component {
   constructor(props) {
     super(props)
 
-    // set title of the webpage when component is created
     document.title = 'My Profile'
   }
 
   render() {
     return (
       <div>
-        {/* ! ADD NAVBAR HERE */}
-
-
-        {/* router to navigate between pages, each page is a container */}
+        <Navbar>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <a href="/">My Profile</a>
+            </Navbar.Brand>
+          </Navbar.Header>
+          <Nav>
+            <NavItem eventKey={1} href="/">
+              Home
+            </NavItem>
+            <NavItem eventKey={1} href="/about">
+              About
+            </NavItem>
+            <NavItem eventKey={1} href="/portfolio">
+              Portfolio
+            </NavItem>
+          </Nav>
+        </Navbar>
         <Switch>
           <Route exact
             path="/"
             render={() => (
-              <MyProfileContainer history={this.props.history} />
+              <MyHome history={this.props.history} />
             )}
           />
-          <Route path="/profiles"
+          <Route path="/about"
             render={() => (
-              <AllProfilesContainer history={this.props.history} />
+              <MyAbout history={this.props.history} />
+            )}
+          />
+          <Route path="/portfolio"
+            render={() => (
+              <MyPortfolio history={this.props.history} />
             )}
           />
         </Switch>

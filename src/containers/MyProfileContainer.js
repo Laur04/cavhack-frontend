@@ -9,71 +9,117 @@ class MyProfileContainer extends Component {
   constructor(props) {
     super(props)
 
-    // State variables to be tracked in the component
     this.state = {
       showModal: false,
       type: '',
       addValue: ''
     }
 
-    // ADD FUNCTION BINDINGS HERE
-
+    this.handleModalOpen = this.handleModalOpen.bind(this)
+    this.handleModalClose = this.handleModalClose.bind(this)
+    this.handleTextChange = this.handleTextChange.bind(this)
+    this.handleAddSubmit = this.handleAddSubmit.bind(this)
   }
 
   componentDidMount() {
+    const userId = new URLSearchParams(this.props.location.search).get('user')
+    if(userId) {
+      console.log('other user profile')
+      console.log(getUserProfile(userId))
 
-    // ADD CHECK FOR USER QUERY PARAMETER HERE
-
+    } else {
+      console.log('my profile')
+    }
   }
 
-  // ADD FUNCTION TO HANDLE OPENING THE MODAL HERE (with "type" variable)
-  handleModalOpen(type) {}
+  handleModalOpen(type) {
+    this.setState({
+      showModal: true,
+      type
+    })
+  }
 
-  // ADD FUNCTION TO HANDLE CLOSING THE MODAL HERE
-  handleModalClose() {}
+  handleModalClose() {
+    this.setState({
+      showModal: false,
+      type: ''
+    })
+  }
 
-  // ADD FUNCTION TO TRACK TEXT CHANGES HERE (with event variable)
-  handleTextChange(e) {}
+  handleTextChange(e) {
+    this.setState({
+      addValue: e.target.value
+    })
+  }
 
-  // ADD FUNCTION TO HANDLE SUBMITTING "ADD" FORM HERE
-  handleAddSubmit() {}
+  handleAddSubmit() {
+    console.log(this.state.addValue)
+    this.setState({
+      addValue: '',
+      showModal: false
+    })
+  }
 
   render() {
     return (
       <div>
         <Grid>
+          <Row className="show-grid">
+          </Row>
           <Row className="show-grid valign-wrapper">
             <Col xs={12} md={8} lg={4}>
-              {/* ADD PROFILE IMAGE HERE */}
+              <Image src="/assets/images/person-placeholder.jpg" thumbnail />
             </Col>
             <Col xs={12} md={4} lg={8}>
-              {/* ADD PAGE HEADER WITH NAME AND ABOUT ME HEADINGS HERE */}
-
-              {/* ADD ABOUT ME DESCRIPTION HERE */}
-
+              <PageHeader>Lauren Delwiche
+                <br />
+                <small>About Me</small>
+              </PageHeader>
+              <p className='description'>I am a high school student who loves animals, books and Netflix.</p>
             </Col>
           </Row>
           <Row className="show-grid">
-
-            {/* Include all sections in the following column */}
             <Col xs={12}>
-
-              {/* ADD HEADER FOR SECTION HERE */}
-
-              {/* ADD PANEL FOR SECTION INFORMATION WITH LIST HERE */}
-
-              {/* ADD BUTTON FOR ADDITIONAL INFORMATION HERE */}
-
+              <PageHeader>
+                My Interests
+              </PageHeader>
+              <Panel>
+                <Panel.Body>
+                  <ul>
+                    <li>movies</li>
+                    <li>reading</li>
+                    <li>coding</li>
+                  </ul>
+                  <Button bsStyle="link" onClick={() => this.handleModalOpen('Interest')}>Add</Button>
+                </Panel.Body>
+              </Panel>
+              <PageHeader>
+                Skills
+              </PageHeader>
+              <Panel>
+                <Panel.Body>
+                  <ul>
+                    <li>HTML</li>
+                    <li>CSS</li>
+                    <li>Javacript</li>
+                  </ul>
+                  <Button bsStyle="link" onClick={() => this.handleModalOpen('Skill')}>Add</Button>
+                </Panel.Body>
+              </Panel>
             </Col>
           </Row>
         </Grid>
-
-        {/* ADD MODAL HERE */}
-
+        <AddModal 
+          showModal={this.state.showModal} 
+          handleModalClose={this.handleModalClose} 
+          type={this.state.type}
+          value={this.state.addValue}
+          handleChange={this.handleTextChange}
+          submit={this.handleAddSubmit}
+        />
       </div>
     )
   }
 }
 
-// Uses withRouter to grab query paramters in URL (ex: http://localhost:3000?user=1 where user is the query parameter)
 export default withRouter(MyProfileContainer)
